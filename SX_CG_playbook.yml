@@ -1,0 +1,820 @@
+---
+- name: Source Installation for base system
+  hosts: slave
+  remote_user: perfbhi
+  tasks:
+       - name: Create base dir for source compilation
+         file:
+           path: "/data1/apps-install"
+           owner: perfbhi
+           group: perfbhi
+           mode: 0777
+           state: directory
+
+       - name: Add additional bash_profile entries
+         lineinfile:
+           path: /home/perfbhi/.bash_profile
+           line: 'export PATH=/data1/apps-install/bin:/data1/DB/bin:/data1/openldap/bin:/data1/Python-2.7.5/bin:$PATH'
+
+       - name: Add additional bash_profile entries
+         lineinfile:
+           path: /home/perfbhi/.bash_profile
+           line: 'export LD_LIBRARY_PATH=/data1/apps-install/lib:/data1/apps-install/lib64:/data1/DB/lib:/data1/openldap/lib:/data1/Python-2.7.5/lib:$LD_LIBRARY_PATH'
+
+       - name: Source bash_profile
+         shell: source .bash_profile chdir=/home/perfbhi
+         args:
+           executable: /bin/bash
+
+       - name: Create remote dir for copying Source packages
+         file:
+           path: "/data1/Source"
+           owner: perfbhi
+           group: perfbhi
+           mode: 0777
+           state: directory
+
+       - name: Copy Pen package
+         copy:
+           src: /home/perfbhi/ansible/Source/pen-0.18.0.tar.gz
+           dest: /data1/Source/pen-0.18.0.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Untar Pen Package
+         unarchive:
+           src: /data1/Source/pen-0.18.0.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile Pen package
+         command: "{{item}} chdir=/data1/Source/pen-0.18.0/"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy BDB package
+         copy:
+           src: /home/perfbhi/ansible/Source/db-4.7.25.tar.gz
+           dest: /data1/Source/db-4.7.25.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Untar BDB Package
+         unarchive:
+           src: /data1/Source/db-4.7.25.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile BDB package
+         command: "{{item}} chdir=/data1/Source/db-4.7.25/build_unix/"
+         with_items:
+         - ../dist/configure --prefix=/data1/DB
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy OpenLDAP package
+         copy:
+           src: /home/perfbhi/ansible/Source/openldap-2.4.35.gz
+           dest: /data1/Source/openldap-2.4.35.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Untar OpenLDAP Package
+         unarchive:
+           src: /data1/Source/openldap-2.4.35.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: export LD_LIBRARY_PATH for OpenLDAP
+         shell: export LD_LIBRARY_PATH="/data1/Source/db-4.7.25/build_unix/.libs" chdir=/data1/Source/openldap-2.4.35
+         
+       - name: Configure OpenLDAP
+         shell: LD_LIBRARY_PATH="-L/data1/Source/db-4.7.25/build_unix/.libs" CPPFLAGS="-I/data1/DB/include/" LDFLAGS="-L/data1/DB/lib/" ./configure --prefix=/data1/openldap chdir=/data1/Source/openldap-2.4.35
+         args:
+           executable: /bin/bash
+
+       - name: Compile OpenLDAP package
+         command: "{{item}} chdir=/data1/Source/openldap-2.4.35"
+         with_items:
+         - /usr/bin/make depend
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Libtool 2.4.6 package
+         copy:
+           src: /home/perfbhi/ansible/Source/libtool-2.4.6.tar.gz
+           dest: /data1/Source/libtool-2.4.6.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Untar Libtool 2.4.6 Package
+         unarchive:
+           src: /data1/Source/libtool-2.4.6.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile Libtool 2.4.6 package
+         command: "{{item}} chdir=/data1/Source/libtool-2.4.6/"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Autoconf package
+         copy:
+           src: /home/perfbhi/ansible/Source/autoconf-2.69.tar.xz
+           dest: /data1/Source/autoconf-2.69.tar.xz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Untar Autoconf Package
+         unarchive:
+           src: /data1/Source/autoconf-2.69.tar.xz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile Autoconf package
+         command: "{{item}} chdir=/data1/Source/autoconf-2.69/"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Automake package
+         copy:
+           src: /home/perfbhi/ansible/Source/automake-1.15.tar.gz
+           dest: /data1/Source/automake-1.15.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Untar Automake Package
+         unarchive:
+           src: /data1/Source/automake-1.15.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile Automake package
+         command: "{{item}} chdir=/data1/Source/automake-1.15/"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy PCRE package
+         copy:
+           src: /home/perfbhi/ansible/Source/pcre-8.33.zip
+           dest: /data1/Source/pcre-8.33.zip
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Untar PCRE Package
+         unarchive:
+           src: /data1/Source/pcre-8.33.zip
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile PCRE package
+         command: "{{item}} chdir=/data1/Source/pcre-8.33/"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Texinfo package
+         copy:
+           src: /home/perfbhi/ansible/Source/texinfo-6.4.tar.gz
+           dest: /data1/Source/texinfo-6.4.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Untar Texinfo Package
+         unarchive:
+           src: /data1/Source/texinfo-6.4.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile Texinfo package
+         command: "{{item}} chdir=/data1/Source/texinfo-6.4/"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Help2man package
+         copy:
+           src: /home/perfbhi/ansible/Source/help2man-1.47.5.tar.xz
+           dest: /data1/Source/help2man-1.47.5.tar.xz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Untar Help2man Package
+         unarchive:
+           src: /data1/Source/help2man-1.47.5.tar.xz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile Help2man package
+         command: "{{item}} chdir=/data1/Source/help2man-1.47.5/"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Apache package
+         copy:
+           src: /home/perfbhi/ansible/Source/httpd-2.4.37.tar.bz2
+           dest: /data1/Source/httpd-2.4.37.tar.bz2
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Apache Package
+         unarchive:
+           src: /data1/Source/httpd-2.4.37.tar.bz2
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Copy Apr package
+         copy:
+           src: /home/perfbhi/ansible/Source/apr-1.6.5.tar.bz2
+           dest: /data1/Source/apr-1.6.5.tar.bz2
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Apr Package
+         unarchive:
+           src: /data1/Source/apr-1.6.5.tar.bz2
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Copy Apr Package inside Apache
+         command: cp -r /data1/Source/apr-1.6.5 /data1/Source/httpd-2.4.37/srclib/apr
+
+       - name: Copy Apr-util package
+         copy:
+           src: /home/perfbhi/ansible/Source/apr-util-1.6.1.tar.bz2
+           dest: /data1/Source/apr-util-1.6.1.tar.bz2
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Apr-util Package
+         unarchive:
+           src: /data1/Source/apr-util-1.6.1.tar.bz2
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Copy Apr-util Package inside Apache
+         command: cp -r /data1/Source/apr-util-1.6.1 /data1/Source/httpd-2.4.37/srclib/apr-util
+
+       - name: Compile Apr package
+         command: "{{item}} chdir=/data1/Source/httpd-2.4.37/srclib/apr/"
+         with_items:
+         - ./configure --prefix=/data1/httpd/apr
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Configure Apr-util package
+         shell: ./configure --prefix=/data1/httpd/apr-util --with-ldap --with-apr=/data1/httpd/apr --with-ldap-include=/data1/openldap/include --with-ldap-lib=/data1/openldap/lib chdir=/data1/Source/httpd-2.4.37/srclib/apr-util
+
+       - name: Compile Apr-util package
+         command: "{{item}} chdir=/data1/Source/httpd-2.4.37/srclib/apr-util"
+         with_items:
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Configure Apache package
+         shell: ./configure  --prefix=/data1/httpd/apache  --enable-dav=shared  --enable-dav  --with-pcre=/data1/apps-install --enable-ldap --enable-authnz-ldap  --disable-userdir --with-apr-util=/data1/httpd/apr-util --with-apr=/data1/httpd/apr --enable-so  --enable-rewrite --enable-cgi --enable-ssl  --enable-modules=all --enable-mods-shared=all --with-ldap --with-mpm=prefork --with-included-apr --with-ldap-include=/data1/openldap/include  --with-ldap-lib=/data1/openldap/lib chdir=/data1/Source/httpd-2.4.37
+
+       - name: Compile Apache package
+         command: "{{item}} chdir=/data1/Source/httpd-2.4.37"
+         with_items:
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy gsoap package
+         copy:
+           src: /home/perfbhi/ansible/Source/gsoap_2.8.2.zip
+           dest: /data1/Source/gsoap_2.8.2.zip
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack gsoap Package
+         unarchive:
+           src: /data1/Source/gsoap_2.8.2.zip
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile gsoap package
+         command: "{{item}} chdir=/data1/Source/gsoap-2.8/"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Configure gsoap for mod_fastcgi installation
+         shell: /data1/httpd/apache/bin/apxs -a -i -c -I/data1/apps-install/include mod_gsoap.c chdir=/data1/Source/gsoap-2.8/gsoap/mod_gsoap/mod_gsoap-0.6/apache_20
+
+       - name: Copy mod_fastcgi package
+         copy:
+           src: /home/perfbhi/ansible/Source/mod_fastcgi-current.tar.gz
+           dest: /data1/Source/mod_fastcgi-current.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack mod_fastcgi Package
+         unarchive:
+           src: /data1/Source/mod_fastcgi-current.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Configure settings for mod_fastcgi installation
+         shell: patch -p1 < byte-compile-against-apache24.diff chdir=/data1/Source/mod_fastcgi-2.4.6
+
+
+       - name: Copy Make file for mod_fastcgi
+         command: cp -r /data1/Source/mod_fastcgi-2.4.6/Makefile.AP2 /data1/Source/mod_fastcgi-2.4.6/Makefile
+
+       - name: Compile mod_fastcgi package
+         shell: /usr/bin/make top_dir=/data1/httpd/apache chdir=/data1/Source/mod_fastcgi-2.4.6
+
+       - name: Install mod_fastcgi package
+         shell: /usr/bin/make top_dir=/data1/httpd/apache install chdir=/data1/Source/mod_fastcgi-2.4.6
+
+       - name: Copy mod_fastcgi conf
+         copy:
+           src: /home/perfbhi/ansible/Source/fastcgi.conf
+           dest: /data1/httpd/apache/conf/extra/
+           owner: perfbhi
+           group: perfbhi
+           mode: 0655
+
+       - name: Copy FastCGI package
+         copy:
+           src: /home/perfbhi/ansible/Source/fcgi.tar.gz
+           dest: /data1/Source/fcgi.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack FastCGI Package
+         unarchive:
+           src: /data1/Source/fcgi.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile FastCGI package
+         command: "{{item}} chdir=/data1/Source/fcgi-2.4.1-SNAP-0311112127"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Protobuf package
+         copy:
+           src: /home/perfbhi/ansible/Source/protobuf-3.0.0.tar.gz
+           dest: /data1/Source/protobuf-3.0.0.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Protobuf Package
+         unarchive:
+           src: /data1/Source/protobuf-3.0.0.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Autogen configure for Protobuf package
+         shell: ./autogen.sh chdir=/data1/Source/protobuf-3.0.0/
+
+       - name: Compile Protobuf package
+         command: "{{item}} chdir=/data1/Source/protobuf-3.0.0"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Confuse package
+         copy:
+           src: /home/perfbhi/ansible/Source/confuse-2.7.tar.gz
+           dest: /data1/Source/confuse-2.7.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Confuse Package
+         unarchive:
+           src: /data1/Source/confuse-2.7.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile Confuse package
+         command: "{{item}} chdir=/data1/Source/confuse-2.7"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Python-2.7.5 package
+         copy:
+           src: /home/perfbhi/ansible/Source/Python-2.7.5.tar.xz
+           dest: /data1/Source/Python-2.7.5.tar.xz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Python-2.7.5 Package
+         unarchive:
+           src: /data1/Source/Python-2.7.5.tar.xz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile Python-2.7.5 package
+         command: "{{item}} chdir=/data1/Source/Python-2.7.5"
+         with_items:
+         - ./configure --prefix=/data1/Python-2.7.5
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Export Python path
+         shell: export PY_PREFIX=/data1/Python-2.7.5
+
+       - name: Copy Boost 1_64 package
+         copy:
+           src: /home/perfbhi/ansible/Source/boost_1_64_0.tar.gz
+           dest: /data1/Source/boost_1_64_0.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Boost 1_64 Package
+         unarchive:
+           src: /data1/Source/boost_1_64_0.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Bootstrap Boost 1_64 package
+         shell: /data1/Source/boost_1_64_0/bootstrap.sh --with-python=/data1/Python-2.7.5/bin/python2 --with-python-version=2.7 --with-python-root=/data1/Python-2.7.5/lib/python2.7 --prefix=/data1/apps-install chdir=/data1/Source/boost_1_64_0
+         args:
+           executable: /bin/bash
+
+       - name: B2 installation for Boost 1_64 package
+         shell: ./b2 --prefix=/data1/apps-install chdir=/data1/Source/boost_1_64_0
+
+       - name: Bjam installation for Boost 1_64 package
+         shell: ./bjam --prefix=/data1/apps-install install chdir=/data1/Source/boost_1_64_0
+
+       - name: Copy Thrift package
+         copy:
+           src: /home/perfbhi/ansible/Source/thrift-0.8.0.tar.gz
+           dest: /data1/Source/thrift-0.8.0.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Thrift Package
+         unarchive:
+           src: /data1/Source/thrift-0.8.0.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Configure settings for Thrift installation
+         shell: ./configure --prefix=/data1/apps-install --with-python=/data1/Python-2.7.5 --with-boost=/data1/apps-install chdir=/data1/Source/thrift-0.8.0
+         args:
+           executable: /bin/bash
+
+       - name: Compile Thrift package
+         command: "{{item}} chdir=/data1/Source/thrift-0.8.0"
+         with_items:
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Cmake package
+         copy:
+           src: /home/perfbhi/ansible/Source/cmake-3.2.1.tar.gz
+           dest: /data1/Source/cmake-3.2.1.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Cmake Package
+         unarchive:
+           src: /data1/Source/cmake-3.2.1.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile Cmake package
+         command: "{{item}} chdir=/data1/Source/cmake-3.2.1"
+         with_items:
+         - ./configure  --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Libuv package
+         copy:
+           src: /home/perfbhi/ansible/Source/libuv-1.x.zip
+           dest: /data1/Source/libuv-1.x.zip
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Libuv Package
+         unarchive:
+           src: /data1/Source/libuv-1.x.zip
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Autogen configure for Libuv package
+         shell: ./autogen.sh chdir=/data1/Source/libuv-1.x
+         args:
+           executable: /bin/bash
+
+       - name: Compile Libuv package
+         command: "{{item}} chdir=/data1/Source/libuv-1.x"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy cpp-driver package
+         copy:
+           src: /home/perfbhi/ansible/Source/cpp-driver-2.2.2.tar.gz
+           dest: /data1/Source/cpp-driver-2.2.2.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack cpp-driver Package
+         unarchive:
+           src: /data1/Source/cpp-driver-2.2.2.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Cmake for cpp-driver package
+         shell: /data1/apps-install/bin/cmake -DCMAKE_INSTALL_PREFIX:PATH=/data1/apps-install . chdir=/data1/Source/cpp-driver-2.2.2
+         args:
+           executable: /bin/bash
+
+       - name: Compile cpp-driver package
+         command: "{{item}} chdir=/data1/Source/cpp-driver-2.2.2"
+         with_items:
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy Libavrocpp package
+         copy:
+           src: /home/perfbhi/ansible/Source/avro-cpp-1.8.2.tar.gz
+           dest: /data1/Source/avro-cpp-1.8.2.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Libavrocpp Package
+         unarchive:
+           src: /data1/Source/avro-cpp-1.8.2.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Create build dir for Libavrocpp compilation
+         file:
+           path: "/data1/Source/avro-cpp-1.8.2/build"
+           owner: perfbhi
+           group: perfbhi
+           mode: 0777
+           state: directory
+
+       - name: Cmake for Libavrocpp package
+         shell: /data1/apps-install/bin/cmake /data1/Source/avro-cpp-1.8.2 -G "Unix Makefiles" -DBOOST_INCLUDEDIR=/data1/apps-install/include -DBOOST_ROOT=/data1/apps-install -DCMAKE_INSTALL_PREFIX=/data1/apps-install/ chdir=/data1/Source/avro-cpp-1.8.2/build
+
+       - name: Compile Libavrocpp package
+         command: "{{item}} chdir=/data1/Source/avro-cpp-1.8.2/build/"
+         with_items:
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy librd-KAFKA package
+         copy:
+           src: /home/perfbhi/ansible/Source/librdkafka-master.zip
+           dest: /data1/Source/librdkafka-master.zip
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack librd-KAFKA Package
+         unarchive:
+           src: /data1/Source/librdkafka-master.zip
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile librd-KAFKA package
+         command: "{{item}} chdir=/data1/Source/librdkafka-master/"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy cpprestsdk-2.9.0 package
+         copy:
+           src: /home/perfbhi/ansible/Source/cpprestsdk-2.9.0.tar.gz
+           dest: /data1/Source/cpprestsdk-2.9.0.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack cpprestsdk-2.9.0 Package
+         unarchive:
+           src: /data1/Source/cpprestsdk-2.9.0.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Create build dir for cpprestsdk-2.9.0 compilation
+         file:
+           path: "/data1/Source/cpprestsdk-2.9.0/Release/build.release"
+           owner: perfbhi
+           group: perfbhi
+           mode: 0777
+           state: directory
+
+       - name: Cmake for cpprestsdk-2.9.0 package
+         shell: /data1/apps-install/bin/cmake /data1/Source/cpprestsdk-2.9.0/Release -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/data1/apps-install -DWERROR=OFF chdir=/data1/Source/cpprestsdk-2.9.0/Release/build.release
+
+       - name: Compile cpprestsdk-2.9.0 package
+         command: "{{item}} chdir=/data1/Source/cpprestsdk-2.9.0/Release/build.release"
+         with_items:
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy szip package
+         copy:
+           src: /home/perfbhi/ansible/Source/szip-2.1.1.tar.gz
+           dest: /data1/Source/szip-2.1.1.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack szip Package
+         unarchive:
+           src: /data1/Source/szip-2.1.1.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Compile szip package
+         command: "{{item}} chdir=/data1/Source/szip-2.1.1"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy GRPC package
+         copy:
+           src: /home/perfbhi/ansible/Source/grpc-1.1.0-pre1.tar.gz
+           dest: /data1/Source/grpc-1.1.0-pre1.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack GRPC Package
+         unarchive:
+           src: /data1/Source/grpc-1.1.0-pre1.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Copy Protobuf for GRPC package
+         copy:
+           src: /home/perfbhi/ansible/Source/protobuf-3.0.0.tar.gz
+           dest: /data1/Source/protobuf-3.0.0.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Protobuf for GRPC Package
+         unarchive:
+           src: /data1/Source/protobuf-3.0.0.tar.gz
+           dest: /data1/Source/grpc-1.1.0-pre1/third_party/
+           remote_src: yes
+
+       - name: Rename Protobuf for GRPC Package compilation
+         shell: mv /data1/Source/grpc-1.1.0-pre1/third_party/protobuf-3.0.0/* /data1/Source/grpc-1.1.0-pre1/third_party/protobuf/ chdir=/data1/Source/grpc-1.1.0-pre1
+
+       - name: Autogen configure Protobuf package for GRPC Package compilation
+         shell: ./autogen.sh chdir=/data1/Source/grpc-1.1.0-pre1/third_party/protobuf
+
+       - name: Compile Protobuf package for GRPC Package compilation
+         command: "{{item}} chdir=/data1/Source/protobuf-3.0.0"
+         with_items:
+         - ./configure --prefix=/data1/apps-install/
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Edit Makefile entry for GRPC package compilation
+         lineinfile:
+           dest: /data1/Source/grpc-1.1.0-pre1/Makefile
+           regexp: '^(.*)CPPFLAGS_opt = -O2(.*)$'
+           line: 'CPPFLAGS_opt = -O0'
+
+       - name: GRPC Package compilation
+         command: "{{item}} chdir=/data1/Source/grpc-1.1.0-pre1"
+         with_items:
+         - /usr/bin/make prefix=/data1/apps-install/
+         - /usr/bin/make prefix=/data1/apps-install/ install
+
+       - name: Copy Hdf5 package
+         copy:
+           src: /home/perfbhi/ansible/Source/hdf5-1.10.1.tar.gz
+           dest: /data1/Source/hdf5-1.10.1.tar.gz
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Unpack Hdf5 Package
+         unarchive:
+           src: /data1/Source/hdf5-1.10.1.tar.gz
+           dest: /data1/Source/
+           remote_src: yes
+
+       - name: Configure Hdf5 package
+         shell: ./configure --prefix=/data1/apps-install --enable-fortran --enable-cxx --enable-java --enable-shared --enable-static --with-szlib=/data1/apps-install/include --with-zlib chdir=/data1/Source/hdf5-1.10.1
+
+       - name: Compile Hdf5 package
+         command: "{{item}} chdir=/data1/Source/hdf5-1.10.1"
+         with_items:
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Copy libopc package
+         copy:
+           src: /home/perfbhi/ansible/Source/libopc-43456.zip
+           dest: /data1/Source/libopc-43456.zip
+           owner: perfbhi
+           group: perfbhi
+           mode: 0755
+
+       - name: Create base dir for libopc source compilation
+         file:
+           path: "/data1/Source/libopc"
+           owner: perfbhi
+           group: perfbhi
+           mode: 0777
+           state: directory
+
+       - name: Unpack libopc Package
+         unarchive:
+           src: /data1/Source/libopc-43456.zip
+           dest: /data1/Source/libopc
+           remote_src: yes
+
+       - name: Configure permission for libopc packages
+         file:
+           path: "/data1/Source/libopc"
+           owner: perfbhi
+           group: perfbhi
+           mode: 0777
+           state: directory
+           recurse: yes
+
+       - name: Configure and compile zlib package for libopc
+         command: "{{item}} chdir=/data1/Source/libopc/third_party/zlib-1.2.5"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Configure libxml2 package for libopc
+         shell: ./configure  --enable-shared --with-zlib=/data1/apps-install  --prefix=/data1/apps-install chdir=/data1/Source/libopc/third_party/libxml2-2.7.7
+
+       - name: Compile libxml2 package for libopc
+         command: "{{item}} chdir=/data1/Source/libopc/third_party/libxml2-2.7.7"
+         with_items:
+         - /usr/bin/make
+         - /usr/bin/make install
+
+       - name: Configure plib package for libopc
+         command: "{{item}} chdir=/data1/Source/libopc/plib"
+         with_items:
+         - ./configure --prefix=/data1/apps-install
+
+       - name: Configure libopc package
+         shell: ./configure --with-zlib=yes --with-zlib-ldflags=/data1/apps-install/lib/libz.so --with-libxml=yes --with-libxml-cppflags="-I/data1/apps-install/include/libxml2" --with-libxml-ldflags=/data1/apps-install/lib/libxml2.so --with-python=/data1/Python-2.7.5/bin/python2.7 chdir=/data1/Source/libopc
+
+       - name: Make libopc package
+         shell: make "DESTDIR=/data1/apps-install" chdir=/data1/Source/libopc
+
+       - name: Make install libopc package
+         shell: make "DESTDIR=/data1/apps-install install" chdir=/data1/Source/libopc
+
+       - name: INSTALLATION COMPLETED
+         shell: echo "INSTALLATION COMPLETED" chdir=/home/perfbhi
