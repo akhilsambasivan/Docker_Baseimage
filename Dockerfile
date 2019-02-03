@@ -1,6 +1,6 @@
 FROM centos:7 
  
-ENV ANSIBLE_VERSION ansible.noarch
+ENV ANSIBLE_VERSION 2.4.2.0
 
 ENV BUILD_PACKAGES \
   bash \
@@ -41,7 +41,7 @@ RUN set -x && \
     pip install ansible==${ANSIBLE_VERSION} && \
     \
     echo "==> Cleaning up..."  && \
-    yum del build-dependencies && \
+    yum remove -y build-dependencies && \
     rm -rf /var/cache/yum/* && \
     \
     echo "==> Adding hosts for convenience..."  && \
