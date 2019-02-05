@@ -1,6 +1,6 @@
 ---
 - name: Source Installation for base system
-  hosts: slave
+  hosts: local
   remote_user: perfbhi
   tasks:
        - name: Create base dir for source compilation

@@ -1,0 +1,12 @@
+---
+- hosts: local
+  gather_facts: true
+  remote_user: root
+  tasks:
+       - name : Create base image container
+         docker_container:
+           name: bhge-centos-7
+           image: "centos:7"
+           detach: yes
+           tty: yes
+           state: started
