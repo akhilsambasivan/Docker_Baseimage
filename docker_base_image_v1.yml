@@ -1,12 +1,16 @@
 ---
-- hosts: local
+- name: Base image creation for docker container
+  hosts: local
   gather_facts: true
   remote_user: root
   tasks:
-       - name : Create base image container
+       - name: Pull CentOS-7 base image for container
          docker_container:
            name: bhge-centos-7
            image: "centos:7"
            detach: yes
            tty: yes
            state: started
+           volumes: 
+             - /home/perfbhi/Docker_Baseimage/Source:/Source:rw
+
