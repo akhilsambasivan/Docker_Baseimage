@@ -1,6 +1,6 @@
 ---
 - name: Base image creation for docker container
-  hosts: local
+  hosts: slave
   gather_facts: true
   remote_user: root
   tasks:
@@ -11,6 +11,11 @@
            detach: yes
            tty: yes
            state: started
-           volumes: 
-             - /home/perfbhi/Docker_Baseimage/Source:/Source:rw
 
+       - name: Copy files from host to container
+         command: docker cp /home/perfbhi/Docker_Baseimage/Source bhge-centos-7:/Source
+         become: yes
+
+       - name: Install packages inside container
+         command: docker exec bhge-centos-7 sh -c /Source/yum_install.sh
+         become: yes
