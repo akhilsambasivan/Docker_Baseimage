@@ -1,6 +1,6 @@
 ---
 - name: Base image creation for docker container
-  hosts: slave
+  hosts: local
   gather_facts: true
   remote_user: root
   tasks:
@@ -13,9 +13,13 @@
            state: started
 
        - name: Copy files from host to container
-         command: docker cp /home/perfbhi/Docker_Baseimage/Source bhge-centos-7:/Source
+         command: docker cp /home/perfbhi/docker/Source bhge-centos-7:/Source
          become: yes
 
-       - name: Install packages inside container
+       - name: Install additional packages inside container to support compilation
          command: docker exec bhge-centos-7 sh -c /Source/yum_install.sh
+         become: yes
+
+       - name: Install and compile packages insider container
+         command: docker exec bhge-centos-7 sh -c /Source/source_compile.sh
          become: yes
