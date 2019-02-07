@@ -15,9 +15,6 @@
        - name: Add config entries for ldconfig execution in container
          command: docker cp /home/perfbhi/docker/Source/ld.so.conf bhge-centos-7:/etc/ld.so.conf
 
-       - name: Execute ldconfig in container
-         command: docker exec bhge-centos-7 bash -c ldconfig
-
        - name: Copy files from host to container
          command: docker cp /home/perfbhi/docker/Source bhge-centos-7:/Source
          become: yes
@@ -27,5 +24,5 @@
          become: yes
 
        - name: Install and compile packages inside container
-         command: docker exec bhge-centos-7 sh -c /Source/source_compile.sh
+         command: docker exec bhge-centos-7 sh -c -l /Source/source_compile.sh
          become: yes
