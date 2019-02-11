@@ -1,4 +1,3 @@
-#/bin/bash
 yum update -y
 yum install expat-devel-2.1.0-10.el7_3.x86_64 -y
 yum install libtool-2.4.2-22.el7_3.x86_64 -y
