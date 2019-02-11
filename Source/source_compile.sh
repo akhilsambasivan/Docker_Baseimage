@@ -1,78 +1,63 @@
 #/bin/bash
 
-#Pen-0.18.0 Installation
+#Pen Installation
 cd /Source/
 tar xzf pen-0.18.0.tar.gz
 cd pen-0.18.0
-./configure --prefix=/usr/local && make && make install
+./configure --prefix=/usr/local
+make && make install
 
-#DB-4.7.25 Installation for OpenLDAP
+#DB Installation for OpenLDAP
 cd /Source/
 tar xzf db-4.7.25.tar.gz
 cd /Source/db-4.7.25/build_unix/
 ../dist/configure --prefix=/usr/local
 make && make install
 
-#ldconfig to load libs
+#Run ldconfig command
 ldconfig
 
-#OpenLDAP-2.4.35 Installation
+#OpenLDAP Installation
 cd /Source/
 tar xzf openldap-2.4.35.gz
 export CPPFLAGS="-I/usr/local/include"
 export LDFLAGS="-L/usr/local/lib"
-cd /Source/openldap-2.4.35
-./configure --prefix=/usr/local 
+cd openldap-2.4.35
+./configure --prefix=/usr/local
 make && make install
 
-#Libtool 2.4.6 Installation
+#Libtool Installation
 cd /Source/
 tar xzf libtool-2.4.6.tar.gz
-cd /Source/libtool-2.4.6/
+cd libtool-2.4.6
 ./configure --prefix=/usr/local
 make && make install
 
-#Autoconf-2.69 Installation
+#Autoconf Installation
 cd /Source/
 tar xf autoconf-2.69.tar.xz
-cd /Source/autoconf-2.69/
+cd autoconf-2.69
 ./configure --prefix=/usr/local
 make && make install
 
-#Automake-1.15 Installation
-cd /Source/
-tar xzf automake-1.15.tar.gz
-cd /Source/automake-1.15/
-./configure --prefix=/usr/local
-make && make install
-
-#Pcre-8.33 Installation
+#PCRE Installation
 cd /Source/
 unzip pcre-8.33.zip
-cd /Source/pcre-8.33/
+cd pcre-8.33
 ./configure --prefix=/usr/local
 make && make install
 
-#Perl-5.24.0 Installation
+#Texinfo Installation
 cd /Source/
-tar xzf perl-5.24.0.tar.gz
-cd /Source/perl-5.24.0
-./Configure -des -Dprefix=/usr
+tar xzf texinfo-6.4.tar.gz
+cd texinfo-6.4
+./configure --prefix=/usr/local
 make && make install
 
-#Texinfo-6.4 Installation
-#cd /Source/
-#tar xzf texinfo-6.4.tar.gz
-#cd /Source/texinfo-6.4/
-#./configure --prefix=/usr/local --disable-static PERL=/usr/bin/perl
-#./configure --prefix=/usr/local PERL=/usr/bin/perl
-#make TEXMF=/usr/local/share/texmf  install-tex
-#make && make install
-
-#Help2man-1.47.5 Installation
+#Help2man Installation
 cd /Source/
 tar xf help2man-1.47.5.tar.xz
-cd /Source/help2man-1.47.5/
+cd help2man-1.47.5
 ./configure --prefix=/usr/local
 make && make install
 
@@ -89,7 +74,7 @@ tar xf apr-1.6.5.tar.bz2
 #Apr-util-1.6.1 Installation
 cd /Source/
 bzip2 -d apr-util-1.6.1.tar.bz2
-tar xf apr-util-1.6.1.tar.bz2 
+tar xf apr-util-1.6.1.tar.bz2
 
 #Copy Apr Apr-util Package inside Apache Installation dir
 cp -r /Source/apr-1.6.5 /Source/httpd-2.4.37/srclib/apr
