@@ -1,6 +1,6 @@
 ---
 - name: Base image creation for docker container
-  hosts: slave
+  hosts: local
   gather_facts: true
   remote_user: root
   tasks:
@@ -13,10 +13,10 @@
            state: started
 
        - name: Add config entries for ldconfig execution in container
-         command: docker cp /home/perfbhi/Docker_Baseimage/Source/ld.so.conf bhge-centos-7:/etc/ld.so.conf
+         command: docker cp /home/perfbhi/docker/Source/ld.so.conf bhge-centos-7:/etc/ld.so.conf
 
        - name: Copy files from host to container
-         command: docker cp /home/perfbhi/Docker_Baseimage/Source bhge-centos-7:/Source
+         command: docker cp /home/perfbhi/docker/Source bhge-centos-7:/Source
          become: yes
 
        - name: Install additional packages inside container to support compilation
