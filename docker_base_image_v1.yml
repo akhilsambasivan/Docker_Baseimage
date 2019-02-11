@@ -1,6 +1,6 @@
 ---
 - name: Base image creation for docker container
-  hosts: local
+  hosts: slave
   gather_facts: true
   remote_user: root
   tasks:
@@ -13,16 +13,22 @@
            state: started
 
        - name: Add config entries for ldconfig execution in container
-         command: docker cp /home/perfbhi/docker/Source/ld.so.conf bhge-centos-7:/etc/ld.so.conf
+         command: docker cp /home/perfbhi/Docker_Baseimage/Source/ld.so.conf bhge-centos-7:/etc/ld.so.conf
 
        - name: Copy files from host to container
-         command: docker cp /home/perfbhi/docker/Source bhge-centos-7:/Source
+         command: docker cp /home/perfbhi/Docker_Baseimage/Source bhge-centos-7:/Source
          become: yes
 
        - name: Install additional packages inside container to support compilation
          command: docker exec bhge-centos-7 sh -c /Source/yum_install.sh
          become: yes
 
+       - name: Install additional RPM's inside container to support compilation
+         command: docker exec bhge-centos-7 sh -c /Source/rpm_install.sh
+         become: yes
+
        - name: Install and compile packages inside container
-         command: docker exec bhge-centos-7 sh -c -l /Source/source_compile.sh
+         command: docker exec bhge-centos-7 sh -c /Source/source_compile.sh
+         register: command_result
+         failed_when: "'FAILED' in command_result.stderr"
          become: yes
