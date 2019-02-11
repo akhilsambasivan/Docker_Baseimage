@@ -64,17 +64,17 @@ make && make install
 #Httpd-2.4.37 Installation
 cd /Source/
 bzip2 -d httpd-2.4.37.tar.bz2
-tar xf httpd-2.4.37.tar.bz2
+tar xf httpd-2.4.37.tar
 
 #Apr-1.6.5 Installation
 cd /Source/
 bzip2 -d apr-1.6.5.tar.bz2
-tar xf apr-1.6.5.tar.bz2
+tar xf apr-1.6.5.tar
 
 #Apr-util-1.6.1 Installation
 cd /Source/
 bzip2 -d apr-util-1.6.1.tar.bz2
-tar xf apr-util-1.6.1.tar.bz2
+tar xf apr-util-1.6.1.tar
 
 #Copy Apr Apr-util Package inside Apache Installation dir
 cp -r /Source/apr-1.6.5 /Source/httpd-2.4.37/srclib/apr
