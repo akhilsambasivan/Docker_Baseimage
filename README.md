@@ -39,5 +39,5 @@ Once the image is build, it will be pushed to the repository and the same can be
 - docker-py >= 1.10.0 or higher
 - The docker server >= 1.9.0 or higher
 
-## PIP install the below module will help to install the supported Ansible docker modules correctly on the host machine which executes the modules:
+## PIP install docker-compose module will help to install the supported Ansible docker modules correctly on the host machine which executes the modules:
 - sudo pip install --trusted-host pypi.python.org --trusted-host pypi.org --trusted-host files.pythonhosted.org docker-compose
