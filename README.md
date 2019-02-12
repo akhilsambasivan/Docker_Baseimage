@@ -32,7 +32,7 @@ respectively.
 Once the image is build, it will be pushed to the repository and the same can be pulled from the repository for future purposes.
 
 ## Final image with the custom compiled modules available at the below dockerhub repository:
-- https://cloud.docker.com/u/akhilsambasivan/repository/docker/akhilsambasivan/docker_baseimage
+- https://hub.docker.com/r/akhilsambasivan/docker_baseimage
 
 ## Prerequisites for this build (on host that executes module)
 - python >= 2.6 or higher
