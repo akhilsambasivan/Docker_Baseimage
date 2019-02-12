@@ -18,7 +18,9 @@ Creating Docker base image [CentOS 7] with custom library's source compiled with
 
 ## During this image creation, we have used 3 different scripts which serves purpose in 
    ** yum installation of libs
+   
    ** rpm installation of libs
+   
    ** Custom source compilation script
 
 which are:
