@@ -209,14 +209,6 @@ cmake ../ -G "Unix Makefiles" -DBOOST_INCLUDEDIR=/usr/local/include -DBOOST_ROOT
 make 
 make install 
 	 	
-#librd-KAFKA Installation
-cd /Source
-unzip librdkafka-master.zip
-cd librdkafka-master/
-./configure --prefix=/usr/local
-make
-make install
-
 #cpprestsdk-2.9.0 Installation
 cd /Source
 tar xzf cpprestsdk-2.9.0.tar.gz
@@ -294,5 +286,18 @@ cd /Source/libopc/
 ./configure --with-zlib=yes --with-zlib-ldflags=/usr/local/lib/libz.so --with-libxml=yes --with-libxml-cppflags="-I/usr/local/include/libxml2" --with-libxml-ldflags=/usr/local/lib/libxml2.so
 make DESTDIR=/usr/local
 make DESTDIR=/usr/local install
+
+#librd-KAFKA Installation
+cd /Source
+unzip librdkafka-master.zip
+cd librdkafka-master/
+export CC=/usr/bin/gcc
+export CXX=/usr/bin/g++
+./configure --prefix=/usr/local
+make
+make install
+
+#Remove Source dir from Container
+rm -rf /Source
 
 echo "INSTALLATION COMPLETED"
