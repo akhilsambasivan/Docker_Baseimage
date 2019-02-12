@@ -34,3 +34,11 @@ Once the image is build, it will be pushed to the repository and the same can be
 
 ## Final image with the custom compiled modules available at the below dockerhub repository:
 - https://cloud.docker.com/u/akhilsambasivan/repository/docker/akhilsambasivan/docker_baseimage
+
+## Prerequisites for this build (on host that executes module)
+python >= 2.6 or higher
+docker-py >= 1.10.0 or higher
+The docker server >= 1.9.0 or higher
+
+## PIP install the below module will help to install the supported Ansible docker modules correctly on the host machine which executes the modules:
+- sudo pip install --trusted-host pypi.python.org --trusted-host pypi.org --trusted-host files.pythonhosted.org docker-compose
