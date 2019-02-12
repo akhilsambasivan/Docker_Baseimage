@@ -32,5 +32,5 @@ respectively.
 
 Once the image is build, it will be pushed to the repository and the same can be pulled from the repository for future purposes.
 
-## Final image with the custom modules available at the below dockerhub repository:
+## Final image with the custom compiled modules available at the below dockerhub repository:
 - https://cloud.docker.com/u/akhilsambasivan/repository/docker/akhilsambasivan/docker_baseimage
