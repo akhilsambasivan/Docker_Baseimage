@@ -292,7 +292,7 @@ cd /Source/libopc/plib
 
 cd /Source/libopc/
 ./configure --with-zlib=yes --with-zlib-ldflags=/usr/local/lib/libz.so --with-libxml=yes --with-libxml-cppflags="-I/usr/local/include/libxml2" --with-libxml-ldflags=/usr/local/lib/libxml2.so
-make DESTDIR=//usr/local
-make DESTDIR=//usr/local install
+make DESTDIR=/usr/local
+make DESTDIR=/usr/local install
 
 echo "INSTALLATION COMPLETED"
