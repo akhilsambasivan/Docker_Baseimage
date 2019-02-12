@@ -2,7 +2,7 @@
 
 Creating Docker base image [CentOS 7] with custom library's source compiled with the help of Ansible YAML code. At no point of time, no rules were added to use a Dockerfile. The image is fully built with Ansible and its docker modules alone.
 
-## Details of ansible docker modules used:
+## Details of ansible docker modules:
 
    https://docs.ansible.com/ansible/latest/plugins/connection/docker.html?highlight=docker
    https://docs.ansible.com/ansible/latest/modules/docker_container_module.html?highlight=docker
