@@ -4,16 +4,16 @@ Creating Docker base image [CentOS 7] with custom library's source compiled with
 
 ## Details of ansible docker modules used:
 
-   ** https://docs.ansible.com/ansible/latest/plugins/connection/docker.html?highlight=docker
-   ** https://docs.ansible.com/ansible/latest/modules/docker_container_module.html?highlight=docker
-   ** https://docs.ansible.com/ansible/latest/modules/docker_image_module.html?highlight=docker
-   ** https://docs.ansible.com/ansible/latest/modules/docker_image_facts_module.html?highlight=docker
-   ** https://docs.ansible.com/ansible/latest/modules/docker_login_module.html?highlight=docker
-   ** https://docs.ansible.com/ansible/latest/modules/docker_network_module.html?highlight=docker
-   ** https://docs.ansible.com/ansible/latest/modules/docker_secret_module.html?highlight=docker
-   ** https://docs.ansible.com/ansible/latest/modules/docker_service_module.html?highlight=docker
-   ** https://docs.ansible.com/ansible/latest/modules/docker_swarm_service_module.html?highlight=docker
-   ** https://docs.ansible.com/ansible/latest/modules/docker_volume_module.html?highlight=docker
+   https://docs.ansible.com/ansible/latest/plugins/connection/docker.html?highlight=docker
+   https://docs.ansible.com/ansible/latest/modules/docker_container_module.html?highlight=docker
+   https://docs.ansible.com/ansible/latest/modules/docker_image_module.html?highlight=docker
+   https://docs.ansible.com/ansible/latest/modules/docker_image_facts_module.html?highlight=docker
+   https://docs.ansible.com/ansible/latest/modules/docker_login_module.html?highlight=docker
+   https://docs.ansible.com/ansible/latest/modules/docker_network_module.html?highlight=docker
+   https://docs.ansible.com/ansible/latest/modules/docker_secret_module.html?highlight=docker
+   https://docs.ansible.com/ansible/latest/modules/docker_service_module.html?highlight=docker
+   https://docs.ansible.com/ansible/latest/modules/docker_swarm_service_module.html?highlight=docker
+   https://docs.ansible.com/ansible/latest/modules/docker_volume_module.html?highlight=docker
 
 
 ## During this image creation, we have used 3 different scripts which serves purpose in 
