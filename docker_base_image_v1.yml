@@ -30,5 +30,5 @@
        - name: Install and compile packages inside container
          command: docker exec bhge-centos-7 sh -c /Source/source_compile.sh
          register: command_result
-         failed_when: "'FAILED' in command_result.stderr"
+         failed_when: "'failed' in command_result.stderr"
          become: yes
