@@ -1,4 +1,5 @@
 yum update -y
+yum install file-5.11-35.el7 -y
 yum install expat-devel-2.1.0-10.el7_3.x86_64 -y
 yum install libtool-2.4.2-22.el7_3.x86_64 -y
 yum install m4-1.4.16-10.el7.x86_64 -y
