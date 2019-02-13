@@ -18,7 +18,6 @@
 
        - name: Copy files from host to container
          command: docker cp /home/perfbhi/docker/Source bhge-centos-7:/Source
-         become: yes
 
        - name: Install additional packages inside container to support compilation
          command: docker exec bhge-centos-7 sh -c /Source/yum_install.sh
@@ -33,3 +32,6 @@
          register: command_result
          failed_when: "'FAILED' in command_result.stderr"
          become: yes
+      
+       - name: Commit the custom container for new image
+         command: docker commit bhge-centos-7 akhilsambasivan/docker_baseimage:latest      
