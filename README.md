@@ -4,8 +4,6 @@ This Docker base image is in CentOS 7 with custom library's source compiled with
 
 ## Image and Container details:
 - Image Size: 470 MB
-- Container total disk space: 25GB
-- Container available disk space: 21G 
 
 ## Details of ansible docker modules:
  - https://docs.ansible.com/ansible/latest/plugins/connection/docker.html?highlight=docker
