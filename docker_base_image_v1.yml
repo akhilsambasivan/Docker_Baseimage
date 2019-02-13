@@ -6,7 +6,7 @@
   tasks:
        - name: Pull CentOS-7 base image for container
          docker_container:
-           name: bhge-centos-7
+           name: custom-centos-7
            image: "centos:7"
            recreate: yes
            detach: yes
@@ -14,24 +14,24 @@
            state: started
 
        - name: Add config entries for ldconfig execution in container
-         command: docker cp /home/perfbhi/docker/Source/ld.so.conf bhge-centos-7:/etc/ld.so.conf
+         command: docker cp /home/perfbhi/docker/Source/ld.so.conf custom-centos-7:/etc/ld.so.conf
 
        - name: Copy files from host to container
-         command: docker cp /home/perfbhi/docker/Source bhge-centos-7:/Source
+         command: docker cp /home/perfbhi/docker/Source custom-centos-7:/Source
 
        - name: Install additional packages inside container to support compilation
-         command: docker exec bhge-centos-7 sh -c /Source/yum_install.sh
+         command: docker exec custom-centos-7 sh -c /Source/yum_install.sh
          become: yes
 
        - name: Install additional RPM's inside container to support compilation
-         command: docker exec bhge-centos-7 sh -c /Source/rpm_install.sh
+         command: docker exec custom-centos-7 sh -c /Source/rpm_install.sh
          become: yes
 
        - name: Install and compile packages inside container
-         command: docker exec bhge-centos-7 sh -c /Source/source_compile.sh
+         command: docker exec custom-centos-7 sh -c /Source/source_compile.sh
          register: command_result
          failed_when: "'FAILED' in command_result.stderr"
          become: yes
       
        - name: Commit the custom container for new image
-         command: docker commit bhge-centos-7 akhilsambasivan/docker_baseimage:latest      
+         command: docker commit custom-centos-7 akhilsambasivan/docker_baseimage:latest      
