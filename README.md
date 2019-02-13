@@ -1,6 +1,6 @@
 # Docker_Baseimage : CentOS 7
 
-Creating Docker base image [CentOS 7] with custom library's source compiled with the help of Ansible YAML code. At no point of time, no rules were added to use a Dockerfile. The image is fully built with Ansible and its docker modules alone.
+This Docker base image is in CentOS 7 with custom library's source compiled with the help of Ansible YAML code. At no point of time, no rules were added to use a Dockerfile. The image is fully built with passing arguments through Ansible and its docker modules.
 
 ## Image and Container details:
 - Image Size: 470 MB
