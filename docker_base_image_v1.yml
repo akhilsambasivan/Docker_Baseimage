@@ -14,10 +14,10 @@
            state: started
 
        - name: Add config entries for ldconfig execution in container
-         command: docker cp /home/perfbhi/docker/Source/ld.so.conf custom-centos-7:/etc/ld.so.conf
+         command: docker cp /home/user/docker/Source/ld.so.conf custom-centos-7:/etc/ld.so.conf
 
        - name: Copy files from host to container
-         command: docker cp /home/perfbhi/docker/Source custom-centos-7:/Source
+         command: docker cp /home/user/docker/Source custom-centos-7:/Source
 
        - name: Install additional packages inside container to support compilation
          command: docker exec custom-centos-7 sh -c /Source/yum_install.sh
